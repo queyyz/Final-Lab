@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 -- เปิดใช้งาน Extension สำหรับเข้ารหัสผ่าน (bcrypt) ใน PostgreSQL
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- 1. สร้างตาราง users
+=======
+>>>>>>> 3b194c9 (up init)
 CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
   username      VARCHAR(50) UNIQUE NOT NULL,
@@ -12,7 +15,10 @@ CREATE TABLE IF NOT EXISTS users (
   last_login    TIMESTAMP
 );
 
+<<<<<<< HEAD
 -- 2. สร้างตาราง logs ประจำ auth-db
+=======
+>>>>>>> 3b194c9 (up init)
 CREATE TABLE IF NOT EXISTS logs (
   id         SERIAL PRIMARY KEY,
   level      VARCHAR(10)  NOT NULL,
@@ -22,6 +28,7 @@ CREATE TABLE IF NOT EXISTS logs (
   meta       JSONB,
   created_at TIMESTAMP DEFAULT NOW()
 );
+<<<<<<< HEAD
 
 -- 3. สร้างข้อมูลแอดมินเริ่มต้น (Seed Data) ไว้ใช้ทดสอบ Test Case 10
 -- รหัสผ่านคือ: adminpass
@@ -32,3 +39,5 @@ VALUES (
   crypt('adminpass', gen_salt('bf')), 
   'admin'
 ) ON CONFLICT (email) DO NOTHING;
+=======
+>>>>>>> 3b194c9 (up init)
