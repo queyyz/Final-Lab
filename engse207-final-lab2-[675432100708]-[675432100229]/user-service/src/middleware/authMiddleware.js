@@ -1,28 +1,30 @@
-const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'secretkey';
-function authenticateToken(req, res, next) {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-	if (!token) return res.status(401).json({ message: 'No token provided' });
-	jwt.verify(token, SECRET, (err, payload) => {
-		if (err) return res.status(403).json({ message: 'Invalid token' });
-		req.user = payload;
-		next();
-	});
-}
-module.exports = authenticateToken;
-const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'secretkey';
+const { verifyToken } = require('./jwtUtils');
 
-function authenticateToken(req, res, next) {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-	if (!token) return res.status(401).json({ message: 'No token provided' });
-	jwt.verify(token, SECRET, (err, user) => {
-		if (err) return res.status(403).json({ message: 'Invalid token' });
-		req.user = user;
-		next();
-	});
+function requireAuth(req, res, next) {
+  const header = req.headers['authorization'] || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : null;
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized: No token provided' });
+  }
+  
+  try {
+    req.user = verifyToken(token);
+    next();
+  } catch (err) {
+    console.error('[AUTH MIDDLEWARE] Invalid JWT:', err.message);
+    return res.status(401).json({ error: 'Unauthorized: ' + err.message });
+  }
 }
 
-module.exports = authenticateToken;
+// 💡 เพิ่มฟังก์ชันนี้เข้าไปให้ใช้งานได้
+function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.user || req.user.role !== role) {
+      return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+    }
+    next();
+  };
+}
+
+module.exports = { requireAuth, requireRole };

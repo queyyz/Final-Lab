@@ -1,16 +1,12 @@
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'secretkey';
 
-function generateToken(user) {
-	return jwt.sign(user, SECRET, { expiresIn: '1h' });
-}
+const verifyToken = (token) => {
+  try {
+    // ใช้ JWT_SECRET จากไฟล์ .env ในการถอดรหัส
+    return jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    throw new Error('Invalid or expired token');
+  }
+};
 
-function verifyToken(token) {
-	try {
-		return jwt.verify(token, SECRET);
-	} catch (err) {
-		return null;
-	}
-}
-
-module.exports = { generateToken, verifyToken };
+module.exports = { verifyToken };
