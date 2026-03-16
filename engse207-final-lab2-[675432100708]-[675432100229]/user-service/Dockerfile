@@ -1,11 +1,7 @@
-FROM node:20-alpine
+FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev
-COPY src/ ./src/
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . ./
 EXPOSE 3003
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD wget -qO- http://localhost:3003/api/users/health || exit 1
 CMD ["node", "src/index.js"]
