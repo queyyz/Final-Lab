@@ -1,4 +1,4 @@
-# INDIVIDUAL_REPORT_65XXXXXXX.md
+# INDIVIDUAL_REPORT_67543210070-8.md
 
 ## ข้อมูลผู้จัดทำ
 - ชื่อ-นามสกุล: นายธนพล ตรีรัตนานุภาพ
@@ -6,16 +6,17 @@
 - กลุ่ม: 16
 
 ## ขอบเขตงานที่รับผิดชอบ
-ได้รับผิดชอบการพัฒนาระบบ microservices ครบทุกส่วนใน Set 1 รวมถึง Frontend, Backend Services (Auth, Task, Log), Database, Nginx API Gateway, และ Docker Compose รวมถึงการทดสอบและเอกสาร โดยทำงานคนเดียวเพื่อให้ระบบทำงานได้อย่างสมบูรณ์
+
+ได้รับผิดชอบการพัฒนา User Service, Frontend, การ Deploy บน Railway, และเอกสารต่างๆ ใน Final Lab Set 2: Microservices Scale-Up + Cloud Deployment (Railway)
 
 ## สิ่งที่ได้ดำเนินการด้วยตนเอง
-ได้พัฒนาและปรับปรุงหน้า `index.html` และ `logs.html` รวมถึง CSS/UI และ Client-side JavaScript เพื่อให้อินเทอร์เฟซผู้ใช้ใช้งานได้ง่าย ได้ตั้งค่า Nginx เป็น API Gateway ด้วย Reverse Proxy และ HTTPS Termination ได้พัฒนา Auth Service สำหรับการยืนยันตัวตนด้วย JWT, Task Service สำหรับจัดการงาน, และ Log Service สำหรับบันทึกเหตุการณ์ ได้ออกแบบ Database Schema และ `init.sql` สำหรับ PostgreSQL ได้ตั้งค่า Docker Compose เพื่อจัดการ Container และ Network ได้ทดสอบระบบ End-to-End และรวบรวมหลักฐาน รวมถึงจัดทำ README และเอกสารต่างๆ
+ได้พัฒนา User Service ใหม่ทั้งหมดด้วย Node.js และ Express รวมถึงการออกแบบ API endpoints สำหรับจัดการข้อมูลผู้ใช้ ได้ปรับปรุง Frontend รวมถึงหน้า `index.html`, `profile.html`, และ `config.js` เพื่อเชื่อมต่อกับ services ต่างๆ ได้ตั้งค่า Docker Compose สำหรับ local testing และสร้าง `.env.example` สำหรับ environment variables ได้ deploy User Service และ User Database บน Railway ได้ตั้งค่า Gateway Strategy (Option A) สำหรับ frontend ได้ทดสอบระบบ T5–T11 (ยกเว้นส่วน task) บน Cloud และถ่าย screenshot ได้จัดทำ README.md และ TEAM_SPLIT.md รวมถึงเอกสารอื่นๆ
 
 ## ปัญหาที่พบและวิธีการแก้ไข
-พบปัญหา 502 Bad Gateway จาก Nginx เพราะ auth-service ไม่สามารถรันได้เนื่องจากขาด module `dotenv` ได้แก้ไขโดยเพิ่ม `dotenv` ใน `package.json` และรัน `npm install` เพื่อซิงค์ `package-lock.json` พบปัญหา Docker build ล้มเหลวเนื่องจากไม่มี `package.json` ใน auth-service ได้แก้ไขโดยสร้างไฟล์ `package.json` ขึ้นมาใหม่ พบปัญหา dependency mismatch ได้แก้ไขโดยรัน `npm install` ในโฟลเดอร์ auth-service เพื่ออัปเดต lockfile
+พบปัญหาในการเชื่อมต่อฐานข้อมูลใน user-service ได้แก้ไขโดยตรวจสอบ connection string และ environment variables พบปัญหา CORS ใน frontend ได้แก้ไขโดยตั้งค่า CORS ใน user-service และปรับ config.js พบปัญหาในการ deploy บน Railway ได้แก้ไขโดยตั้งค่า environment variables ให้ถูกต้องและตรวจสอบ logs
 
 ## สิ่งที่ได้เรียนรู้จากงานนี้
-ได้เรียนรู้การพัฒนา microservices ด้วย Node.js และ Express รวมถึงการจัดการฐานข้อมูล PostgreSQL และการใช้ Docker Compose ได้เรียนรู้การตั้งค่า Nginx เป็น reverse proxy และการจัดการ HTTPS ได้เรียนรู้การแก้ปัญหา dependency และ build issues ใน Docker รวมถึงการทดสอบระบบและการทำเอกสาร
+ได้เรียนรู้การพัฒนา microservices สำหรับจัดการข้อมูลผู้ใช้ รวมถึงการออกแบบ API และการจัดการฐานข้อมูล ได้เรียนรู้การปรับปรุง frontend และการตั้งค่า config สำหรับ multi-service architecture ได้เรียนรู้การ deploy บน cloud platform เช่น Railway และการจัดการ environment variables ได้เรียนรู้การทดสอบระบบและการทำเอกสารสำหรับโปรเจค microservices
 
-## แนวทางการพัฒนาต่อไปใน Set 2
-ใน Set 2 จะเน้นการปรับปรุงประสิทธิภาพของระบบ เช่น การเพิ่ม caching, การปรับปรุง security, และการเพิ่มฟีเจอร์ใหม่ๆ เช่น notification system หรือ advanced logging รวมถึงการปรับปรุง UI/UX และการทดสอบ automated testing เพิ่มเติม
+## ส่วนที่อยากปรับปรุง
+อยากปรับปรุงการจัดการ error handling ใน user-service ให้ดียิ่งขึ้น และเพิ่ม validation สำหรับข้อมูลผู้ใช้ อยากปรับปรุง UI ของ frontend ให้ responsive และ user-friendly มากขึ้น อยากปรับปรุงกระบวนการ deploy ให้มี automation มากขึ้น และอยากเพิ่ม testing framework สำหรับ automated tests

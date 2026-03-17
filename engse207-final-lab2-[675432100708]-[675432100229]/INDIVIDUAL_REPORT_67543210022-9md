@@ -1,0 +1,22 @@
+# INDIVIDUAL_REPORT_67543210022-9.md
+
+## ข้อมูลผู้จัดทำ
+- ชื่อ-นามสกุล: นายภูริณัฐ เต๋จ๊ะ
+- รหัสนักศึกษา: 67543210022-9
+- กลุ่ม: 16
+
+## ขอบเขตงานที่รับผิดชอบ
+
+ได้รับผิดชอบการพัฒนา Auth Service, Task Service, และการ Deploy บน Railway ใน Final Lab Set 2: Microservices Scale-Up + Cloud Deployment (Railway)
+
+## สิ่งที่ได้ดำเนินการด้วยตนเอง
+ได้พัฒนา Auth Service รวมถึงเพิ่ม Register API และแยกฐานข้อมูล auth-db ได้ปรับปรุง Task Service ให้ทำงานกับ task-db แยกและใช้ JWT สำหรับ authentication แทน JOIN ได้ deploy Auth Service และ Task Service รวมฐานข้อมูลบน Railway ได้ตั้งค่า environment variables บน Railway ได้ทดสอบระบบ T2, T3, T4 และส่วนของ task บน Cloud และถ่าย screenshot ได้จัดทำ individual report นี้
+
+## ปัญหาที่พบและวิธีการแก้ไข
+พบปัญหาในการแยกฐานข้อมูลใน task-service ได้แก้ไขโดยปรับโค้ดให้ใช้ JWT แทน JOIN พบปัญหาในการ deploy บน Railway ได้แก้ไขโดยตั้งค่า environment variables ให้ถูกต้องและตรวจสอบ logs พบปัญหาในการเชื่อมต่อฐานข้อมูล ได้แก้ไขโดยตรวจสอบ connection string
+
+## สิ่งที่ได้เรียนรู้จากงานนี้
+ได้เรียนรู้การพัฒนา Auth Service และ Task Service ในสถาปัตยกรรม microservices รวมถึงการแยกฐานข้อมูลและการใช้ JWT ได้เรียนรู้การ deploy บน cloud platform เช่น Railway และการจัดการ environment variables ได้เรียนรู้การทดสอบระบบและการแก้ปัญหาในสภาพแวดล้อม production
+
+## ส่วนที่อยากปรับปรุง
+อยากปรับปรุงการจัดการ security ใน Auth Service ให้ดียิ่งขึ้น เช่น เพิ่ม rate limiting และ password strength validation อยากปรับปรุง performance ของ Task Service โดยเพิ่ม caching และ optimization อยากปรับปรุงกระบวนการ deploy ให้มี CI/CD pipeline และอยากเพิ่ม monitoring และ logging สำหรับ services
