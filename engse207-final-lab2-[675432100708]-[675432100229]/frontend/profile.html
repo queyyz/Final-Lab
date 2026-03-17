@@ -4,34 +4,159 @@
   <meta charset="UTF-8">
   <title>👤 Profile — Final Lab Set 2</title>
   <style>
-    /* CSS พื้นฐานแบบเดียวกับหน้าหลัก */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0f172a; --surface: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --blue: #3b82f6; --blue2: #2563eb; --radius: 10px; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .profile-box { background: var(--surface); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 500px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+
+    :root {
+      --bg: #fff1f5;
+      --surface: #ffe4ec;
+      --border: #f9a8d4;
+      --text: #831843;
+      --muted: #be185d;
+      --pink: #ec4899;
+      --pink2: #db2777;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(180deg, #ffe4ec, #fff1f5, #fff7fa);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .profile-box {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(236,72,153,.2);
+      position: relative;
+      z-index: 2;
+    }
+
     h2 { margin-bottom: 1.5rem; text-align: center; }
+
     .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; color: var(--muted); font-size: .85rem; margin-bottom: .4rem; }
-    .form-group input, .form-group textarea { width: 100%; padding: .75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; }
-    .form-group textarea { min-height: 100px; resize: vertical; }
-    .btn-primary { width: 100%; padding: .85rem; background: var(--blue); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 1rem; }
-    .btn-primary:hover { background: var(--blue2); }
-    .btn-back { display: block; text-align: center; margin-top: 1rem; color: var(--muted); text-decoration: none; font-size: .9rem; }
+
+    .form-group label {
+      display: block;
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: .4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: .75rem 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: .85rem;
+      background: var(--pink);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: .2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--pink2);
+      transform: translateY(-1px);
+    }
+
+    .btn-back {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+    }
+
     .btn-back:hover { color: var(--text); }
+
+    /* 🌸 Sakura Effect */
+    .petals {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -20px;
+      font-size: 18px;
+      animation: fall linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      25% {
+        transform: translateX(20px) rotate(90deg);
+      }
+      50% {
+        transform: translateX(-15px) rotate(180deg);
+      }
+      75% {
+        transform: translateX(25px) rotate(270deg);
+      }
+      100% {
+        transform: translateX(-10px) rotate(360deg);
+        top: 100vh;
+        opacity: 0.3;
+      }
+    }
+
   </style>
 </head>
 <body>
 
+<div class="petals" id="petals"></div>
+
 <div class="profile-box">
-  <h2>👤 แก้ไขโปรไฟล์</h2>
+  <h2>🌸 แก้ไขโปรไฟล์</h2>
+
   <div class="form-group">
     <label>ชื่อที่ใช้แสดง (Display Name)</label>
     <input type="text" id="display_name" placeholder="ตั้งชื่อที่อยากให้คนอื่นเห็น">
   </div>
+
   <div class="form-group">
     <label>คำอธิบายตัวเอง (Bio)</label>
     <textarea id="bio" placeholder="บอกอะไรสักหน่อยเกี่ยวกับตัวคุณ..."></textarea>
   </div>
+
   <button class="btn-primary" onclick="updateProfile()">💾 บันทึกโปรไฟล์</button>
   <a href="index.html" class="btn-back">← กลับหน้า Task Board</a>
 </div>
@@ -41,16 +166,16 @@
 const USER = window.APP_CONFIG.USER_URL;
 const token = localStorage.getItem('jwt_token');
 
-if (!token) window.location.href = 'index.html'; // ถ้าไม่มี token ดีดกลับไปหน้าแรก
+if (!token) window.location.href = 'index.html';
 
 async function loadProfile() {
   try {
     const res  = await fetch(`${USER}/api/users/me`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    if (!res.ok) throw new Error('Failed to load profile');
+    if (!res.ok) throw new Error('Failed');
     const data = await res.json();
-    
+
     document.getElementById('display_name').value = data.profile.display_name || '';
     document.getElementById('bio').value          = data.profile.bio || '';
   } catch (err) {
@@ -61,7 +186,7 @@ async function loadProfile() {
 async function updateProfile() {
   const display_name = document.getElementById('display_name').value;
   const bio          = document.getElementById('bio').value;
-  
+
   try {
     const res = await fetch(`${USER}/api/users/me`, {
       method: 'PUT',
@@ -71,7 +196,7 @@ async function updateProfile() {
       },
       body: JSON.stringify({ display_name, bio })
     });
-    
+
     if (res.ok) {
       alert('✅ อัปเดต Profile สำเร็จ!');
       window.location.href = 'index.html';
@@ -83,8 +208,25 @@ async function updateProfile() {
   }
 }
 
-// โหลดข้อมูลทันทีที่เปิดหน้า
 loadProfile();
+
+/* 🌸 Generate Sakura petals */
+(function createPetals() {
+  const container = document.getElementById('petals');
+  const petals = ['🌸','🌺','💮'];
+
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('div');
+    p.classList.add('petal');
+    p.textContent = petals[Math.floor(Math.random() * petals.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.fontSize = (Math.random() * 10 + 10) + 'px';
+    p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
+  }
+})();
 </script>
+
 </body>
 </html>
