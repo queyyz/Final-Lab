@@ -33,39 +33,12 @@
 
 Set 2 ต่อยอดจาก Set 1 โดย
 
-- ขยายจาก 2 services เป็น **3 services** (Auth, Task, User)
-- เปลี่ยนจาก Shared Database เป็น **Database-per-Service** (3 databases แยกกัน)
-- เพิ่ม **Register API** ใน Auth Service
-- สร้าง **User Service** ใหม่สำหรับจัดการ profile
-- ลบ Nginx และ Log Service ออก เพราะ Railway มี URL ให้แต่ละ service อยู่แล้ว
-- Deploy ทุก service บน **Railway Cloud**
 
 ---
 
 ## 4. Architecture Diagram (Cloud)
 
-```text
-Internet / Browser / Postman
-          │
-          ├──► https://auth-service-production-d7a0.up.railway.app     → auth-service (PORT 3001)
-          │                                                                            │
-          │                                                                     auth-db (PostgreSQL)
-          │                                                                        users, logs
-          │
-          ├──► https://task-service-production-cbc1.up.railway.app     → task-service (PORT 3002)
-          │                                                                           │
-          │                                                                  task-db (PostgreSQL)
-          │                                                                      tasks, logs
-          │
-          ├──► https://user-service-production-f14a.up.railway.app     → user-service (PORT 3003)
-          │                                                                            │
-          │                                                                     user-db (PostgreSQL)
-          │                                                                     user_profiles, logs
-          │
-          └──► https://frontend-production-47ba.up.railway.app/index.html → frontend (nginx)
 
-JWT_SECRET ใช้ร่วมกันทุก service
-user_id ใช้เป็น logical reference (ไม่มี FK ข้าม DB)
 ```
 
 ---
@@ -258,10 +231,7 @@ curl http://localhost:3003/api/users \
 
 ## 13. Known Limitations
 
-- ไม่มี Foreign Key ข้าม database — `user_id` ใน task-db และ user-db เป็น **logical reference** ไปยัง auth-db
-- ถ้าลบ user ใน auth-db ข้อมูลใน task-db และ user-db จะยังคงอยู่ (orphan records)
-- ไม่มี API Gateway รวม — client ต้องเรียกแต่ละ service URL โดยตรง
-- Log ถูกบันทึกใน `logs` table ของแต่ละ database ไม่มี centralized logging
+
 
 ---
 
