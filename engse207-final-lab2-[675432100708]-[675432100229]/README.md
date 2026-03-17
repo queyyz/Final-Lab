@@ -20,10 +20,10 @@
 
 | Service | URL |
 |---|---|
-| Frontend | `` |
-| Auth Service | `` |
-| Task Service | `` |
-| User Service | `` |
+| Frontend | `https://frontend-production-f797.up.railway.app` |
+| Auth Service | `https://auth-service-production-4c89.up.railway.app/api/auth/health` |
+| Task Service | `https://task-service-production-6814.up.railway.app/api/tasks/health` |
+| User Service | `https://user-service-production-5ad5.up.railway.app/api/users/health` |
 
 > แทนที่ `[...]` ด้วย URL จริงจาก Railway หลัง Deploy
 
