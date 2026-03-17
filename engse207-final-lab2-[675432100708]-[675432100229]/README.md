@@ -31,14 +31,55 @@
 
 ## 3. Project Overview
 
-Set 2 ต่อยอดจาก Set 1 โดย
+ใน Set 2 มีการพัฒนาระบบต่อจาก Set 1 โดยมีการปรับปรุงโครงสร้างและเพิ่มความสามารถของระบบให้มีความเป็น Microservices มากยิ่งขึ้น ดังนี้
 
+- เพิ่มจำนวน `service` จากเดิม 2 ส่วน ขยายเป็น `3 services` ได้แก่ `Auth`, `Task` และ `User` เพื่อแยกความรับผิดชอบของแต่ละระบบให้ชัดเจนขึ้น
+- ปรับรูปแบบการจัดเก็บข้อมูล จากเดิมที่ใช้ฐานข้อมูลร่วมกัน เปลี่ยนเป็นแนวทาง `Database-per-Service` โดยแต่ละ `service` มี `database `ของตัวเองทั้งหมด 3 ฐานข้อมูล
+- เพิ่มความสามารถในการสมัครสมาชิก ผ่านการสร้าง `endpoint` `Register` `API` ภายใน `Auth Service`
+- พัฒนา `User Service` ขึ้นมาใหม่ เพื่อรองรับการจัดการข้อมูลโปรไฟล์ของผู้ใช้งานโดยเฉพาะ
+- ตัดการใช้งาน `Nginx` และ `Log Service` ออก เนื่องจาก `Railway` รองรับการเข้าถึงแต่ละ `service` ผ่าน `URL` ได้โดยตรงอยู่แล้ว
+- นำทุก `service` ขึ้น `deploy` บน `Railway Cloud` เพื่อให้ระบบสามารถใช้งานได้จริงในสภาพแวดล้อมออนไลน์
 
 ---
 
 ## 4. Architecture Diagram (Cloud)
 
-
+```text
+🌐 Client (Browser / Postman / Internet)
+│
+│
+├── 🔐 Auth Service
+│     🌍 https://auth-service-production-d7a0.up.railway.app
+│     ⚙️ PORT 3001
+│     │
+│     └── 🗄️ auth-db (PostgreSQL)
+│           📄 users
+│           📝 logs
+│
+│
+├── 📋 Task Service
+│     🌍 https://task-service-production-cbc1.up.railway.app
+│     ⚙️ PORT 3002
+│     │
+│     └── 🗄️ task-db (PostgreSQL)
+│           📄 tasks
+│           📝 logs
+│
+│
+├── 👤 User Service
+│     🌍 https://user-service-production-f14a.up.railway.app
+│     ⚙️ PORT 3003
+│     │
+│     └── 🗄️ user-db (PostgreSQL)
+│           📄 user_profiles
+│           📝 logs
+│
+│
+└── 🎨 Frontend (Web UI)
+      🌍 https://frontend-production-47ba.up.railway.app/index.html
+      ⚡ ให้บริการผ่าน nginx
+🔑 ทุก service ภายในระบบใช้ค่า JWT_SECRET เดียวกัน เพื่อให้สามารถตรวจสอบและยืนยันตัวตนของผู้ใช้ได้อย่างสอดคล้องกันทั้งระบบ
+🧩 ค่า user_id ถูกใช้เป็นตัวอ้างอิงข้าม service ในเชิงตรรกะ (logical reference) โดยไม่มีการกำหนด Foreign Key เชื่อมระหว่าง database ของแต่ละ service
 ```
 
 ---
@@ -231,7 +272,10 @@ curl http://localhost:3003/api/users \
 
 ## 13. Known Limitations
 
-
+- โครงสร้างฐานข้อมูลของแต่ละ `service` ถูกแยกออกจากกัน ทำให้ไม่สามารถกำหนด `Foreign Key` ข้าม database ได้ โดย `user_id` ที่อยู่ใน `task-db` และ `user-db` จะอ้างอิงถึงข้อมูลใน `auth-db` ในลักษณะเชิงตรรกะเท่านั้น (logical reference)
+- เมื่อมีการลบข้อมูลผู้ใช้ใน auth-db จะไม่ส่งผลต่อข้อมูลที่เกี่ยวข้องใน task-db และ user-db ส่งผลให้เกิดข้อมูลค้าง (orphan data) ที่ยังไม่ถูกลบตาม
+- ระบบไม่มี `API Gateway` เป็นตัวกลางรวมการเรียกใช้งาน ทำให้ฝั่ง `client` จำเป็นต้องเรียก `API` ของแต่ละ `service` แยกกันโดยตรง
+- การจัดเก็บ `log` ยังเป็นแบบแยกส่วน โดยแต่ละ `service` จะบันทึกข้อมูลลงใน `table logs` ของ `database` ตัวเอง ยังไม่มีระบบรวม `log` จากทุก service มาไว้ในศูนย์กลางเดียวกัน
 
 ---
 
